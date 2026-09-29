@@ -11,29 +11,86 @@ Use this Skill only on repositories you are authorized to analyze. Analysis is *
 Copy this repository directory to your Codex skills directory, for example:
 
 ```bash
-cp -R backend-repo-career-miner "${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+git clone https://github.com/mi26827/Resume-Service.git
+cp -R Resume-Service "${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
 ```
+
+The repository name (`Resume-Service`) and Skill name (`backend-repo-career-miner`) currently differ.
 
 ## Use
 
-Ask Codex to use `$backend-repo-career-miner` on a local backend repository. Provide the repository path and, for contribution attribution, your Git author name/email. The Skill first detects the real stack, follows runtime call chains, then correlates code with Git history. Output defaults to `career-miner-output/`.
+Ask Codex to use `$backend-repo-career-miner` on a local backend repository. Provide the repository path and, for contribution attribution, your Git author name/email. If no mode is specified, the Skill uses `DISCOVERY`. Output defaults to `career-miner-output/`.
 
-Example requests:
-
-```text
-Use $backend-repo-career-miner to analyze /path/to/java-service.
-My Git author is Jane Doe <jane@example.com>.
-```
+### Discovery
 
 ```text
-Use $backend-repo-career-miner on /path/to/go-api, but produce capability analysis only; do not attribute authorship.
+Use $backend-repo-career-miner on the current repository.
+
+Mode: DISCOVERY
 ```
+
+### Contribution
+
+```text
+Use $backend-repo-career-miner in CONTRIBUTION mode.
+
+Candidate Git identity:
+Jane Doe <jane@example.com>
+
+Candidate time window:
+2026-06-01 to 2026-09-30
+```
+
+### AI / Agent
+
+```text
+Use $backend-repo-career-miner in AI_AGENT mode.
+
+Evaluate whether this project has existing AI capabilities
+and whether a real Agent opportunity exists.
+
+Do not force an Agent.
+```
+
+### Resume
+
+```text
+Use $backend-repo-career-miner in RESUME mode.
+
+Target role:
+Backend Engineer
+
+Experience level:
+Intern
+
+Resume language:
+Chinese
+```
+
+### Full
+
+```text
+Use $backend-repo-career-miner in FULL mode for a complete analysis.
+```
+
+`FULL` should normally be used after project understanding and candidate attribution have been reviewed, and it must be explicitly requested.
 
 The Skill is language- and framework-neutral. Its detection guide includes Java/Kotlin, Go, Python, Node.js, Rust, C#, Ruby, and PHP, while analysis follows generic backend boundaries rather than language syntax.
 
 ## Output and evidence semantics
 
-Contract 0.2 supports `FULL`, `CAPABILITY`, `ATTRIBUTION`, `RESUME`, `AI_AGENT`, and explicitly selected `CUSTOM` output modes. It generates only mode-relevant reports and separates:
+Contract 0.2 supports `DISCOVERY`, `CONTRIBUTION`, `AI_AGENT`, `RESUME`, `FULL`, and explicitly selected `CUSTOM` output modes. The mode matrix is:
+
+| Mode | Reports in addition to `SUMMARY.md` |
+|---|---|
+| `DISCOVERY` | `01`, `02`, `03` |
+| `CONTRIBUTION` | `04`, `05` |
+| `AI_AGENT` | `07`, `08` |
+| `RESUME` | `06`, `09` |
+| `FULL` | `01` through `09` |
+| `CUSTOM` | Explicitly requested reports |
+
+It generates only mode-relevant reports and separates:
 
 - `PROJECT_CAPABILITY`: present in the project but not proven as the candidate's work.
 - `PERSONAL_CONTRIBUTION`: supported by STRONG or MEDIUM attribution evidence.

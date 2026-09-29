@@ -6,14 +6,14 @@ Choose one primary mode. `CUSTOM` is allowed only when the user explicitly selec
 
 | Mode | Required reports in addition to `SUMMARY.md` |
 |---|---|
-| `FULL` | `01` through `09` |
-| `CAPABILITY` | `01-project-overview.md`, `02-tech-stack.md`, `03-architecture-analysis.md`, `05-backend-engineering-analysis.md` |
-| `ATTRIBUTION` | `04-contribution-evidence.md` |
-| `RESUME` | `04-contribution-evidence.md`, `06-resume-bullets.md`, `09-interview-preparation.md` |
+| `DISCOVERY` | `01-project-overview.md`, `02-tech-stack.md`, `03-architecture-analysis.md` |
+| `CONTRIBUTION` | `04-contribution-evidence.md`, `05-backend-engineering-analysis.md` |
 | `AI_AGENT` | `07-ai-agent-scan.md`, `08-agent-opportunity.md` |
+| `RESUME` | `06-resume-bullets.md`, `09-interview-preparation.md` |
+| `FULL` | `01` through `09` |
 | `CUSTOM` | Only explicitly requested numbered reports |
 
-Dependencies may be analyzed internally without emitting their reports. For example, resume mode still verifies implementation paths. Do not silently widen the output set. On rerun, write into a new run directory or remove stale numbered files so they cannot be mistaken for current output.
+Dependencies may be analyzed internally without emitting their reports. For example, `CONTRIBUTION` may perform lightweight discovery, and `RESUME` may read an existing `04-contribution-evidence.md` or re-verify necessary evidence without emitting `01`–`05`. Do not silently widen the output set. If Contribution Evidence needed by `RESUME` is unavailable, mark the run `PARTIAL` or `BLOCKED`, name the missing evidence, and do not fabricate it. On rerun, write into a new run directory or remove stale numbered files so they cannot be mistaken for current output.
 
 ## Required header
 

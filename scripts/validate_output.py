@@ -21,15 +21,15 @@ REPORTS = {
     "09-interview-preparation.md",
 }
 MODE_REPORTS = {
-    "FULL": REPORTS,
-    "CAPABILITY": {"01-project-overview.md", "02-tech-stack.md", "03-architecture-analysis.md", "05-backend-engineering-analysis.md"},
-    "ATTRIBUTION": {"04-contribution-evidence.md"},
-    "RESUME": {"04-contribution-evidence.md", "06-resume-bullets.md", "09-interview-preparation.md"},
+    "DISCOVERY": {"01-project-overview.md", "02-tech-stack.md", "03-architecture-analysis.md"},
+    "CONTRIBUTION": {"04-contribution-evidence.md", "05-backend-engineering-analysis.md"},
     "AI_AGENT": {"07-ai-agent-scan.md", "08-agent-opportunity.md"},
+    "RESUME": {"06-resume-bullets.md", "09-interview-preparation.md"},
+    "FULL": REPORTS,
 }
 HEADER = re.compile(
     r"> Contract: `career-miner/0\.2`\s*\n"
-    r"> Mode: `(?P<mode>FULL|CAPABILITY|ATTRIBUTION|RESUME|AI_AGENT|CUSTOM)`\s*\n"
+    r"> Mode: `(?P<mode>DISCOVERY|CONTRIBUTION|AI_AGENT|RESUME|FULL|CUSTOM)`\s*\n"
     r"> Revision: `(?P<revision>[^`]+)`\s*\n"
     r"> Status: `(?P<status>COMPLETE|PARTIAL|BLOCKED)`"
 )

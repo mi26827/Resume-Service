@@ -34,20 +34,33 @@ class ValidateOutputTest(unittest.TestCase):
     def tearDown(self):
         self.temp_dir.cleanup()
 
-    def test_valid_modes(self):
-        for mode in MODE_REPORTS:
+    def test_discovery_contribution_ai_agent_resume_and_full_are_valid(self):
+        for mode in ("DISCOVERY", "CONTRIBUTION", "AI_AGENT", "RESUME", "FULL"):
             with self.subTest(mode=mode):
                 self.temp_dir.cleanup()
                 self.temp_dir = tempfile.TemporaryDirectory()
                 self.assertEqual(validate(self.make_run(mode)), [])
 
-    def test_rejects_stale_report(self):
-        root = self.make_run("ATTRIBUTION")
-        (root / "08-agent-opportunity.md").write_text(HEADER.format(mode="ATTRIBUTION"), encoding="utf-8")
+    def test_discovery_rejects_resume_report_as_stale(self):
+        root = self.make_run("DISCOVERY")
+        (root / "06-resume-bullets.md").write_text(
+            HEADER.format(mode="DISCOVERY") + "Implementation Evidence | Attribution Evidence\n",
+            encoding="utf-8",
+        )
         self.assertTrue(any("unexpected" in error for error in validate(root)))
 
+    def test_contribution_requires_backend_engineering_report(self):
+        root = self.make_run("CONTRIBUTION")
+        (root / "05-backend-engineering-analysis.md").unlink()
+        self.assertTrue(any("missing reports" in error for error in validate(root)))
+
+    def test_resume_does_not_require_contribution_report(self):
+        root = self.make_run("RESUME")
+        self.assertFalse((root / "04-contribution-evidence.md").exists())
+        self.assertEqual(validate(root), [])
+
     def test_rejects_inconsistent_revision(self):
-        root = self.make_run("ATTRIBUTION")
+        root = self.make_run("CONTRIBUTION")
         report = root / "04-contribution-evidence.md"
         report.write_text(report.read_text().replace("abc123", "def456"), encoding="utf-8")
         self.assertTrue(any("one mode and revision" in error for error in validate(root)))
