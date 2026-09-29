@@ -8,12 +8,7 @@
 
 ## Evidence levels
 
-- `STRONG`: matching candidate identity, substantive commit/diff, and live code path (ideally tests/config too).
-- `MEDIUM`: code plus specific user evidence or strong corroboration, but incomplete Git attribution.
-- `WEAK`: project capability exists without candidate ownership.
-- `UNKNOWN`: insufficient or conflicting evidence.
-
-Only STRONG/MEDIUM claims enter personal bullets. User statements must be labeled and checked against code where possible. Merge commits, generated files, formatting changes, bulk renames, vendored code, and blame after refactors require extra caution.
+Score every claim on the independent Implementation Evidence and Attribution Evidence axes in [evidence-model.md](evidence-model.md). Only claims with at least `MEDIUM` on **both** axes enter personal bullets. User statements must be labeled and checked against code where possible. Merge commits, generated files, formatting changes, bulk renames, vendored code, and blame after refactors require extra caution.
 
 ## Git procedure
 

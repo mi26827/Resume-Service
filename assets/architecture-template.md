@@ -1,5 +1,10 @@
 # Architecture Analysis
 
+> Contract: `career-miner/0.2`
+> Mode: `<MODE>`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE | PARTIAL | BLOCKED`
+
 ## System context
 ```text
 [Actor] -> [API/Event/Job] -> [Service] -> [Store/Downstream]
