@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Repo Career Miner"
+  short_description: "Mine backend repository evidence into truthful resume material"
+  default_prompt: "Analyze this backend repository evidence-first, attribute my contributions, and produce career-miner-output reports plus an Agent MVP opportunity."
