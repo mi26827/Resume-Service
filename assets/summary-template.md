@@ -9,8 +9,15 @@
 - Repository root:
 - Analyzed timestamp:
 - Requested scope:
+- Analysis mode:
 - Candidate identity status:
+- Candidate time window:
+- Target role:
+- Experience level:
+- Resume language:
 - Generated reports:
+
+Use `NOT_PROVIDED` or `NOT_APPLICABLE` for irrelevant or absent inputs; do not infer them.
 
 ## Project observations (`PROJECT_CAPABILITY`)
 -

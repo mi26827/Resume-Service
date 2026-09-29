@@ -5,8 +5,11 @@
 > Revision: `<commit-or-NOT_AVAILABLE>`
 > Status: `COMPLETE | PARTIAL | BLOCKED`
 
-## Candidate identity
+## Candidate scope
 - Confirmed author name/email:
+- Candidate time window:
+- Target role:
+- Experience level:
 - User statements:
 
 ## Evidence ledger
