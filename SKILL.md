@@ -68,6 +68,17 @@ Use the mode-to-file matrix and stable report rules in [output-contract.md](refe
 
 Maintain an evidence ledger with a stable claim ID, claim, category, independent Implementation Evidence and Attribution Evidence levels, evidence type, file/symbol/line, commit, author, corroboration, caveat, and secret-safe summary. Follow [evidence-model.md](references/evidence-model.md); do not collapse the two dimensions into a single level.
 
+Use the following evidence funnel. Each stage may consume only established output from the stages above it; never begin with resume wording and work backward to find support:
+
+```text
+Source code
+  -> DISCOVERY: project / technology stack / architecture
+  -> CONTRIBUTION: candidate-authored work / two-dimensional evidence
+  -> RESUME: engineering findings / clustering / project profile / final experience
+```
+
+`DISCOVERY` establishes what the repository does. `CONTRIBUTION` intersects those capabilities with Git attribution to establish what the candidate did. `RESUME` first derives atomic Engineering Findings from qualifying claims, then clusters related findings into coherent experience themes. Only after that may it write the project introduction, technology stack, architecture highlights, and final project-experience bullets. A later stage must preserve the upstream Claim IDs and both evidence dimensions so every final sentence is traceable.
+
 ### 0. Detect the stack before interpreting it
 
 Inventory manifests, lockfiles, infrastructure, CI/CD, configuration, imports, and runtime wiring. Produce a Technology Stack Map with `detected / used / role / evidence / confidence`; do not presuppose a language. Read [stack-detection.md](references/stack-detection.md).
@@ -100,7 +111,14 @@ If no Agent exists, inspect manual diagnosis, judgment, approval, multi-system l
 
 ### 7. Generate resume and interview material
 
-Build primary bullets only from `PERSONAL_CONTRIBUTION` with `STRONG` or `MEDIUM` Attribution Evidence and at least `MEDIUM` Implementation Evidence: business context + personal action + implementation + evidenced engineering value. Preserve uncertainty and avoid inflated adjectives. For each bullet include both evidence dimensions, citations, topics, interview risk, and likely questions. Build interview preparation from the exact claims and code locations.
+Generate resume material in this order:
+
+1. **Engineering Findings:** derive one atomic finding per qualifying `PERSONAL_CONTRIBUTION`. Each finding states the engineering problem, candidate action, evidenced mechanism, and supportable value, and retains its Claim ID, both evidence dimensions, and citations.
+2. **Clustering:** group findings by a defensible engineering theme or end-to-end business flow. Do not cluster merely because technologies share a name, and do not combine findings in a way that hides weaker evidence. A finding may appear in more than one candidate cluster during drafting, but each final bullet must list every supporting Claim ID.
+3. **Project framing:** synthesize a concise project introduction from `PROJECT_CAPABILITY`; select only evidenced, actually used technologies for the technology stack; and describe architecture design highlights only where the repository establishes the runtime flow and trade-off. These sections provide context and are not personal ownership claims.
+4. **Final project experience:** build primary bullets only from clustered `PERSONAL_CONTRIBUTION` claims with `STRONG` or `MEDIUM` Attribution Evidence and at least `MEDIUM` Implementation Evidence. Use business context + personal action + implementation + evidenced engineering value. Preserve uncertainty and avoid inflated adjectives.
+
+For every final bullet include all supporting Claim IDs, both evidence dimensions for each claim, citations, topics, interview risk, and likely questions. Do not repeat the same accomplishment across bullets merely to increase bullet count. Build interview preparation from the exact final claims and code locations.
 
 ## Output contract
 
