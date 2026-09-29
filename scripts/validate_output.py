@@ -68,6 +68,24 @@ def validate(root: Path) -> list[str]:
         text = (root / name).read_text(encoding="utf-8")
         if "Implementation Evidence" not in text or "Attribution Evidence" not in text:
             errors.append(f"{name}: both evidence dimensions are required")
+    if "06-resume-bullets.md" in generated:
+        text = (root / "06-resume-bullets.md").read_text(encoding="utf-8")
+        required_sections = (
+            "Engineering Findings",
+            "Finding Clusters",
+            "Project Introduction",
+            "Technology Stack",
+            "Architecture Design Highlights",
+            "Final Project Experience",
+        )
+        missing_sections = [
+            section for section in required_sections if f"## {section}" not in text
+        ]
+        if missing_sections:
+            errors.append(
+                "06-resume-bullets.md: missing evidence-funnel sections: "
+                + ", ".join(missing_sections)
+            )
     if "08-agent-opportunity.md" in generated:
         text = (root / "08-agent-opportunity.md").read_text(encoding="utf-8")
         outcomes = re.findall(

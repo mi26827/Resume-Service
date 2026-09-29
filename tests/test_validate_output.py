@@ -23,6 +23,15 @@ class ValidateOutputTest(unittest.TestCase):
             body = HEADER.format(mode=mode)
             if name in {"04-contribution-evidence.md", "06-resume-bullets.md"}:
                 body += "Implementation Evidence | Attribution Evidence\n"
+            if name == "06-resume-bullets.md":
+                body += """
+## Engineering Findings
+## Finding Clusters
+## Project Introduction
+## Technology Stack
+## Architecture Design Highlights
+## Final Project Experience
+"""
             if name == "08-agent-opportunity.md":
                 body += "- Outcome: `NO_SUITABLE_OPPORTUNITY`\n"
             (directory / name).write_text(body, encoding="utf-8")
@@ -64,6 +73,16 @@ class ValidateOutputTest(unittest.TestCase):
         report = root / "04-contribution-evidence.md"
         report.write_text(report.read_text().replace("abc123", "def456"), encoding="utf-8")
         self.assertTrue(any("one mode and revision" in error for error in validate(root)))
+
+    def test_resume_requires_evidence_funnel_sections(self):
+        root = self.make_run("RESUME")
+        report = root / "06-resume-bullets.md"
+        report.write_text(
+            report.read_text().replace("## Finding Clusters\n", ""), encoding="utf-8"
+        )
+        self.assertTrue(
+            any("missing evidence-funnel sections" in error for error in validate(root))
+        )
 
 
 if __name__ == "__main__":

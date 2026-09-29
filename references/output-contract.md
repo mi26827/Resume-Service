@@ -15,6 +15,16 @@ Choose one primary mode. `CUSTOM` is allowed only when the user explicitly selec
 
 Dependencies may be analyzed internally without emitting their reports. For example, `CONTRIBUTION` may perform lightweight discovery, and `RESUME` may read an existing `04-contribution-evidence.md` or re-verify necessary evidence without emitting `01`–`05`. Do not silently widen the output set. If Contribution Evidence needed by `RESUME` is unavailable, mark the run `PARTIAL` or `BLOCKED`, name the missing evidence, and do not fabricate it. On rerun, write into a new run directory or remove stale numbered files so they cannot be mistaken for current output.
 
+## Evidence funnel and resume derivation
+
+The logical stage order is `Source -> DISCOVERY -> CONTRIBUTION -> RESUME`, even when a narrow mode performs prerequisite checks internally. Information may move forward only after meeting the preceding stage's admission rules:
+
+1. `DISCOVERY` establishes project purpose, technologies actually used, and architecture/runtime paths.
+2. `CONTRIBUTION` establishes candidate work by pairing Implementation Evidence with independent Attribution Evidence.
+3. `RESUME` converts qualifying personal claims into atomic Engineering Findings, clusters related findings, adds evidence-backed project context, and then writes the final project experience.
+
+The resume report must make this derivation visible. It contains, in order: `Engineering Findings`, `Finding Clusters`, `Project Introduction`, `Technology Stack`, `Architecture Design Highlights`, and `Final Project Experience`. Project framing may use `PROJECT_CAPABILITY`, but final bullets may use only qualifying `PERSONAL_CONTRIBUTION`. Every final bullet lists its supporting Claim IDs; grouping does not raise or average evidence levels.
+
 ## Required header
 
 Start every report with these machine-checkable lines after its title:

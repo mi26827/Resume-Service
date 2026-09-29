@@ -100,6 +100,8 @@ No performance or scale metric is emitted without an explicit benchmark, monitor
 
 Every claim has two independent scores: **Implementation Evidence** says whether the capability exists and is wired; **Attribution Evidence** says whether the candidate substantively contributed it. An Agent is recommended only after workflow, judgment, tool-loop, evaluation, and safety gates pass; deterministic automation or no solution are valid outcomes.
 
+Resume generation follows a one-way evidence funnel rather than drafting claims first: source code establishes the project, stack, and architecture; Git analysis identifies the candidate's work with two-dimensional evidence; qualifying claims become atomic engineering findings; related findings are clustered; and only then are the project introduction, stack, architecture highlights, and final project experience written. The final bullets retain Claim IDs so they can be traced back to both implementation and attribution evidence.
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
