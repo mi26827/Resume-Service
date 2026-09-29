@@ -1,12 +1,25 @@
 # Agent Opportunity
 
+> Contract: `career-miner/0.2`
+> Mode: `<MODE>`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE | PARTIAL | BLOCKED`
+
 > Classification: `EXPLORATION` unless repository evidence proves an existing implementation.
 
-## Recommendation
-- Agent / deterministic workflow / no suitable opportunity:
+## Decision
+- Outcome: `PROPOSE_AGENT | RECOMMEND_DETERMINISTIC_AUTOMATION | NO_SUITABLE_OPPORTUNITY | INSUFFICIENT_EVIDENCE`
 - Evidence-based rationale:
 
-## Proposal
+| Gate | Pass / fail / unknown | Repository or workflow evidence |
+|---|---|---|
+| Real workflow | | |
+| Judgment need | | |
+| Tool loop | | |
+| Bounded value | | |
+| Safety | | |
+
+## Proposal (only for `PROPOSE_AGENT`)
 - **Business Problem:**
 - **Current Manual Process:**
 - **Why Agent (rather than ordinary automation):**

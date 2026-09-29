@@ -1,8 +1,15 @@
 # Resume Bullets
 
+> Contract: `career-miner/0.2`
+> Mode: `<MODE>`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE | PARTIAL | BLOCKED`
+
 ## Bullet N
 - **Resume bullet:**
-- **Evidence level:** STRONG / MEDIUM
+- **Claim ID:**
+- **Implementation Evidence:** STRONG / MEDIUM
+- **Attribution Evidence:** STRONG / MEDIUM
 - **Evidence:** `path:line`, symbol, commit
 - **Engineering topics:**
 - **Engineering value and its basis:**

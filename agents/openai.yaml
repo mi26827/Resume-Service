@@ -1,4 +1,4 @@
 interface:
   display_name: "Backend Repo Career Miner"
   short_description: "Mine backend repository evidence into truthful resume material"
-  default_prompt: "Analyze this backend repository evidence-first, attribute my contributions, and produce career-miner-output reports plus an Agent MVP opportunity."
+  default_prompt: "Analyze this backend repository evidence-first, attribute candidate contributions when requested, and generate only the reports relevant to the requested analysis mode. Evaluate whether a credible AI / Agent opportunity exists. Only propose an Agent when repository evidence and workflow evidence justify one. If ordinary deterministic automation, workflow orchestration, or no AI solution is more appropriate, explicitly recommend that instead."

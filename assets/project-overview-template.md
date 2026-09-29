@@ -1,5 +1,10 @@
 # Project Overview
 
+> Contract: `career-miner/0.2`
+> Mode: `<MODE>`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE | PARTIAL | BLOCKED`
+
 ## Purpose and business domain
 - Purpose:
 - Users/actors:

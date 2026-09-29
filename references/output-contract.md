@@ -1,0 +1,43 @@
+# Output contract 0.2
+
+## Analysis modes
+
+Choose one primary mode. `CUSTOM` is allowed only when the user explicitly selects reports.
+
+| Mode | Required reports in addition to `SUMMARY.md` |
+|---|---|
+| `FULL` | `01` through `09` |
+| `CAPABILITY` | `01-project-overview.md`, `02-tech-stack.md`, `03-architecture-analysis.md`, `05-backend-engineering-analysis.md` |
+| `ATTRIBUTION` | `04-contribution-evidence.md` |
+| `RESUME` | `04-contribution-evidence.md`, `06-resume-bullets.md`, `09-interview-preparation.md` |
+| `AI_AGENT` | `07-ai-agent-scan.md`, `08-agent-opportunity.md` |
+| `CUSTOM` | Only explicitly requested numbered reports |
+
+Dependencies may be analyzed internally without emitting their reports. For example, resume mode still verifies implementation paths. Do not silently widen the output set. On rerun, write into a new run directory or remove stale numbered files so they cannot be mistaken for current output.
+
+## Required header
+
+Start every report with these machine-checkable lines after its title:
+
+```markdown
+> Contract: `career-miner/0.2`
+> Mode: `FULL`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE` <!-- or PARTIAL / BLOCKED -->
+```
+
+Use the same mode and revision in all files from one run. `PARTIAL` names missing evidence or scope; `BLOCKED` names the blocker. An empty section is not evidence.
+
+## Consistency rules
+
+- Use only the category enum and evidence levels defined in [evidence-model.md](evidence-model.md).
+- Keep claim IDs stable and reuse them in summary, evidence, resume, and interview reports.
+- Cite repository evidence as `path:line` or `path:start-end`; cite Git evidence with a commit hash and path.
+- Label external/user facts by source type and do not present them as repository-derived facts.
+- Link only generated files. Do not claim missing reports were produced.
+- Use `NOT_APPLICABLE` rather than invented content.
+- Give every uncertainty a consequence: omitted claim, lower level, or follow-up evidence needed.
+
+## Repeat runs
+
+Treat the analyzed revision as an immutable snapshot. For a later run, compare claim IDs and report `ADDED`, `CHANGED`, `UNCHANGED`, or `REMOVED` only when both revisions are available. Re-evaluate levels from the new snapshot; do not carry authorship, metrics, or runtime status forward without evidence.

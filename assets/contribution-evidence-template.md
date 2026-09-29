@@ -1,16 +1,21 @@
 # Contribution Evidence
 
+> Contract: `career-miner/0.2`
+> Mode: `<MODE>`
+> Revision: `<commit-or-NOT_AVAILABLE>`
+> Status: `COMPLETE | PARTIAL | BLOCKED`
+
 ## Candidate identity
 - Confirmed author name/email:
 - User statements:
 
 ## Evidence ledger
-| Feature/claim | Category | Level | Files and symbols | Commit/author | Components | Business context | Caveat |
-|---|---|---|---|---|---|---|---|
+| Claim ID | Feature/claim | Category | Implementation Evidence | Attribution Evidence | Files and symbols | Commit/author | Corroboration | Business context | Caveat |
+|---|---|---|---|---|---|---|---|---|---|
 
 ## Rejected personal claims
-| Claim | Current evidence | Why not personal | Evidence needed |
-|---|---|---|---|
+| Claim ID | Claim | Implementation Evidence | Attribution Evidence | Why not personal | Evidence needed |
+|---|---|---|---|---|---|
 
 ## Sensitive-data review
 - No sensitive values reproduced. Record only the approved redaction notice when applicable.

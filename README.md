@@ -1,6 +1,6 @@
 # backend-repo-career-miner
 
-An evidence-first Codex Skill that turns a backend repository into architecture notes, candidate-attributed contribution evidence, truthful resume bullets, interview preparation, and—when appropriate—a bounded Agent MVP proposal.
+An evidence-first Codex Skill that turns a backend repository into architecture notes, candidate-attributed contribution evidence, truthful resume bullets, interview preparation, and—only when justified—a bounded Agent MVP proposal.
 
 ## Safety and authorization
 
@@ -33,13 +33,15 @@ The Skill is language- and framework-neutral. Its detection guide includes Java/
 
 ## Output and evidence semantics
 
-The generated ten-file report separates:
+Contract 0.2 supports `FULL`, `CAPABILITY`, `ATTRIBUTION`, `RESUME`, `AI_AGENT`, and explicitly selected `CUSTOM` output modes. It generates only mode-relevant reports and separates:
 
 - `PROJECT_CAPABILITY`: present in the project but not proven as the candidate's work.
 - `PERSONAL_CONTRIBUTION`: supported by STRONG or MEDIUM attribution evidence.
 - `EXPLORATION`: proposed research, refactoring, or AI/Agent extension—not claimed as production work.
 
 No performance or scale metric is emitted without an explicit benchmark, monitoring artifact, test result, or authorized user-supplied source.
+
+Every claim has two independent scores: **Implementation Evidence** says whether the capability exists and is wired; **Attribution Evidence** says whether the candidate substantively contributed it. An Agent is recommended only after workflow, judgment, tool-loop, evaluation, and safety gates pass; deterministic automation or no solution are valid outcomes.
 
 ## License
 

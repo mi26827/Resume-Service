@@ -13,4 +13,21 @@ Use three evidence layers: dependency, code, and runtime flow. Classify independ
 - **Multi-Agent:** multiple distinct agent roles exchange/delegate work; multiple model calls are insufficient.
 - **MCP:** actual MCP client/server protocol implementation or configuration; ordinary function tools are insufficient.
 
-For absent Agents, identify a real manual loop, available safe tools, and measurable task success. Prefer read-only tools first. Require least privilege, audit logs, prompt/data boundaries, confirmation for writes, bounded steps/cost, failure recovery, and evaluation cases. Recommend conventional automation when reasoning adds no value.
+## Opportunity decision
+
+For an absent Agent, cite repository evidence and, separately, workflow evidence. Evaluate each gate:
+
+1. **Real workflow:** a recurring user/operator goal and current steps are evidenced, not merely imagined.
+2. **Judgment need:** inputs or next actions vary enough that fixed rules are inadequate. If rules are sufficient, recommend deterministic automation or workflow orchestration.
+3. **Tool loop:** safe, observable tools can support `Goal → Reasoning → Tool → Observation → Next Action`; a chatbot alone fails this gate.
+4. **Bounded value:** success and failure can be evaluated on a representative task set.
+5. **Safety:** permissions, data boundaries, audit, stop conditions, and human approval make a candidate-sized MVP credible.
+
+Select exactly one outcome:
+
+- `PROPOSE_AGENT`: all five gates pass; document evidence and remaining risk.
+- `RECOMMEND_DETERMINISTIC_AUTOMATION`: a real workflow exists but model judgment or an iterative tool loop is unnecessary.
+- `NO_SUITABLE_OPPORTUNITY`: the repository offers no useful, bounded AI/automation problem.
+- `INSUFFICIENT_EVIDENCE`: workflow or tool evidence is too thin to decide; list the questions/artifacts needed.
+
+Do not treat novelty, an LLM dependency, or resume appeal as a positive signal. Prefer read-only tools first. Require least privilege, audit logs, prompt/data boundaries, confirmation for writes, bounded steps/cost, failure recovery, and evaluation cases.
