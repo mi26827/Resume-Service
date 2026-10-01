@@ -10,17 +10,94 @@
 
 分析输入是本地仓库路径。`DISCOVERY` 不需要候选人身份。若要分析个人贡献，必须由用户提供并确认能够识别其提交的 Git 作者姓名和/或邮箱。没有用户确认的身份信息时，Skill 不得猜测哪些提交属于用户；仍可描述项目具备的能力，但不能将其归属到个人。
 
-## 安装
+## 安装与更新
 
-克隆本 Skill 仓库，并复制到 Codex 的 Skill 目录：
+安装目录必须使用 Skill 名称 `backend-repo-career-miner`，即使源仓库名为 `Resume-Service` 也是如此。若设置了 `CODEX_HOME`，安装位置为 `$CODEX_HOME/skills/backend-repo-career-miner`；若未设置，默认位置为 `$HOME/.codex/skills/backend-repo-career-miner`。
+
+### 首次安装
+
+直接克隆到最终 Skill 目录。以下命令发现目标目录已存在时会提示检查，不会覆盖目录内容，也不会额外嵌套创建 `Resume-Service` 目录。
+
+#### macOS / Linux（shell）
 
 ```bash
-git clone https://github.com/mi26827/Resume-Service.git
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R Resume-Service "${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+skills_root="${CODEX_HOME:-$HOME/.codex}/skills"
+target="$skills_root/backend-repo-career-miner"
+if [ -e "$target" ]; then
+  printf 'Install directory already exists; inspect it before proceeding: %s\n' "$target" >&2
+else
+  mkdir -p "$skills_root"
+  git clone https://github.com/mi26827/Resume-Service.git "$target"
+fi
 ```
 
-如果 Codex 尚未识别该 Skill，请重新加载或重启 Codex。安装目录使用 Skill 名称，即使源仓库名为 `Resume-Service` 也是如此。
+#### Windows（PowerShell）
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+if (Test-Path -LiteralPath $target) {
+    throw "Install directory already exists; inspect it before proceeding: $target"
+}
+if (-not (Test-Path -LiteralPath $skillsRoot)) {
+    New-Item -ItemType Directory -Path $skillsRoot | Out-Null
+}
+git clone https://github.com/mi26827/Resume-Service.git "$target"
+if ($LASTEXITCODE -ne 0) { throw "git clone failed; inspect the target before retrying." }
+```
+
+安装后如果 Codex 尚未识别该 Skill，请重新加载或重启 Codex。
+
+### 更新已有 Git 克隆
+
+先检查安装目录；仅当工作区干净时才执行更新。`--ff-only` 不会创建合并提交，并会在本地分支与远程分叉时拒绝更新。
+
+#### macOS / Linux（shell）
+
+```bash
+target="${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+git -C "$target" status --short --branch
+git -C "$target" diff
+```
+
+确认 Git 工作区干净后再更新：
+
+```bash
+target="${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+git -C "$target" pull --ff-only
+```
+
+#### Windows（PowerShell）
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+git -C "$target" status --short --branch
+git -C "$target" diff
+```
+
+确认 Git 工作区干净后再更新：
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+git -C "$target" pull --ff-only
+if ($LASTEXITCODE -ne 0) { throw "Update stopped; inspect the local and remote histories before proceeding." }
+```
+
+如果目标目录已存在，安装或更新前先检查目录状态。如果 `git status` 显示本地改动，先审阅改动，并将整个目录（包括隐藏文件和未跟踪文件）复制到一个确认尚不存在的新位置作为恢复副本；保存或合并这些改动后再更新。不要使用强制拉取、reset、clean 或直接覆盖目录。如果 `git status` 表明它不是 Git 克隆（例如从压缩包复制而来），请把新版本克隆到另一个确认未占用的暂存目录，与现有安装进行比较。先备份现有目录，再手动迁移本地改动；确认目标为空后才切换活动目录。在 Codex 识别更新后的 Skill 前保留备份。不要直接克隆或复制到已有安装目录上。
 
 ## 快速开始：生成第一份 DISCOVERY 报告
 
@@ -101,13 +178,15 @@ Skill 从本地文件系统读取目标仓库，并将报告写入所选的本�
 契约 0.2 对各模式输出文件的定义见 [`references/output-contract.md`](references/output-contract.md)。在本仓库目录下校验生成结果：
 
 ```bash
-python3 scripts/validate_output.py <输出目录>
+OUTPUT_DIR="/绝对路径/career-miner-output"
+python3 scripts/validate_output.py "$OUTPUT_DIR"
 ```
 
 校验 `CUSTOM` 时，必须传入用户选择的准确报告文件名（不包含 `SUMMARY.md`）：
 
 ```bash
-python3 scripts/validate_output.py <输出目录> \
+OUTPUT_DIR="/绝对路径/career-miner-output"
+python3 scripts/validate_output.py "$OUTPUT_DIR" \
   --custom-reports 01-project-overview.md 03-architecture-analysis.md
 ```
 

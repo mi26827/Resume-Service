@@ -10,17 +10,94 @@ Use the Skill if you are a student, job seeker, or software engineer who wants t
 
 The analysis input is a local repository path. `DISCOVERY` needs no candidate identity. To analyze personal contributions, provide and confirm the Git author name and/or email that identifies your commits. Without user-confirmed identity information, the Skill must not guess which commits belong to you; it can still describe project capabilities without attributing them to a person.
 
-## Install
+## Install and update
 
-Clone this Skill repository, then copy it into your Codex skills directory:
+The install directory must use the Skill name, `backend-repo-career-miner`, even though the source repository is named `Resume-Service`. If `CODEX_HOME` is set, install under `$CODEX_HOME/skills/backend-repo-career-miner`. If it is unset, the default is `$HOME/.codex/skills/backend-repo-career-miner`.
+
+### First install
+
+Clone directly into the final Skill directory. These commands stop to flag an existing target instead of copying over it or creating a nested `Resume-Service` directory.
+
+#### macOS / Linux (shell)
 
 ```bash
-git clone https://github.com/mi26827/Resume-Service.git
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R Resume-Service "${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+skills_root="${CODEX_HOME:-$HOME/.codex}/skills"
+target="$skills_root/backend-repo-career-miner"
+if [ -e "$target" ]; then
+  printf 'Install directory already exists; inspect it before proceeding: %s\n' "$target" >&2
+else
+  mkdir -p "$skills_root"
+  git clone https://github.com/mi26827/Resume-Service.git "$target"
+fi
 ```
 
-If Codex does not recognize the Skill yet, reload or restart Codex. The install directory uses the Skill name, even though the source repository is named `Resume-Service`.
+#### Windows (PowerShell)
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+if (Test-Path -LiteralPath $target) {
+    throw "Install directory already exists; inspect it before proceeding: $target"
+}
+if (-not (Test-Path -LiteralPath $skillsRoot)) {
+    New-Item -ItemType Directory -Path $skillsRoot | Out-Null
+}
+git clone https://github.com/mi26827/Resume-Service.git "$target"
+if ($LASTEXITCODE -ne 0) { throw "git clone failed; inspect the target before retrying." }
+```
+
+If Codex does not recognize the Skill after installation, reload or restart Codex.
+
+### Update an existing Git clone
+
+First inspect the install. Run the update only when the working tree is clean. `--ff-only` avoids creating a merge commit and refuses a diverged local branch.
+
+#### macOS / Linux (shell)
+
+```bash
+target="${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+git -C "$target" status --short --branch
+git -C "$target" diff
+```
+
+If the output confirms a clean Git working tree, update it:
+
+```bash
+target="${CODEX_HOME:-$HOME/.codex}/skills/backend-repo-career-miner"
+git -C "$target" pull --ff-only
+```
+
+#### Windows (PowerShell)
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+git -C "$target" status --short --branch
+git -C "$target" diff
+```
+
+If the output confirms a clean Git working tree, update it:
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:CODEX_HOME)) {
+    $skillsRoot = Join-Path $HOME ".codex\skills"
+} else {
+    $skillsRoot = Join-Path $env:CODEX_HOME "skills"
+}
+$target = Join-Path $skillsRoot "backend-repo-career-miner"
+git -C "$target" pull --ff-only
+if ($LASTEXITCODE -ne 0) { throw "Update stopped; inspect the local and remote histories before proceeding." }
+```
+
+If the directory already exists, inspect it before installing or updating. If `git status` shows local changes, review them and make a recoverable copy of the entire directory—including hidden and untracked files—to a new location that does not already exist. Preserve or merge those changes before updating; do not use force-pull, reset, clean, or overwrite the directory. If `git status` reports that the directory is not a Git clone (for example, it was copied from an archive), clone the new version into a separate, unused staging directory and compare it with the existing install. Back up the existing directory and manually carry over any local changes. Only switch the active directory after checking that the destination is empty; keep the backup until Codex recognizes the updated Skill. Never clone or copy directly over an existing install.
 
 ## Quick start: first DISCOVERY report
 
@@ -101,13 +178,15 @@ Every claim tracks two independent dimensions: **Implementation Evidence** estab
 Contract 0.2 defines each mode's output set in [`references/output-contract.md`](references/output-contract.md). To check generated output from this repository:
 
 ```bash
-python3 scripts/validate_output.py <output-dir>
+OUTPUT_DIR="/absolute/path/to/career-miner-output"
+python3 scripts/validate_output.py "$OUTPUT_DIR"
 ```
 
 For `CUSTOM`, pass the exact report filenames the user selected (without `SUMMARY.md`):
 
 ```bash
-python3 scripts/validate_output.py <output-dir> \
+OUTPUT_DIR="/absolute/path/to/career-miner-output"
+python3 scripts/validate_output.py "$OUTPUT_DIR" \
   --custom-reports 01-project-overview.md 03-architecture-analysis.md
 ```
 
