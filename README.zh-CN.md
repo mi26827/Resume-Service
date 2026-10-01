@@ -202,9 +202,9 @@ python3 scripts/validate_output.py "$OUTPUT_DIR" \
 
 校验器检查头部、报告集合一致性和部分结构要求。校验通过不代表陈述一定属实、Git 身份正确、引用有效或简历内容真实；这些仍需基于证据审阅。
 
-## 可选项目技术学习 PDF
+## 项目技术学习指南
 
-Skill 会先生成 `exports/project-learning-guide.md` 草稿并询问你是否符合学习需要；你可以直接编辑该文件或提出修改意见。Skill 根据你确认后的版本生成 PDF。JSON 结构见 [`assets/project-learning-guide.schema.json`](assets/project-learning-guide.schema.json)，Markdown 草稿模板见 [`assets/project-learning-guide-template.md`](assets/project-learning-guide-template.md)。批准前不会生成 PDF。批准后也可单独使用渲染器：
+在 `DISCOVERY` 和 `FULL` 模式下，Skill 默认生成 `exports/project-learning-guide.md` 草稿并询问你是否符合学习需要；你可以直接编辑该文件或提出修改意见。Skill 根据你确认后的版本生成 PDF。设置 `project_learning_pdf: false` 可跳过指南。JSON 结构见 [`assets/project-learning-guide.schema.json`](assets/project-learning-guide.schema.json)，Markdown 草稿模板见 [`assets/project-learning-guide-template.md`](assets/project-learning-guide-template.md)。批准前不会生成 PDF。批准后也可单独使用渲染器：
 
 ```bash
 python3 scripts/render_project_learning_guide.py \

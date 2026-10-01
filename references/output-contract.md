@@ -69,6 +69,8 @@ python3 scripts/validate_output.py <output-dir> \
 
 The validator checks supported contract headers, shared contract/mode/revision/status, required report filenames, stale numbered reports, and a few required structural sections and markers. It does not establish whether repository claims are factually correct, whether a cited author is the user, whether citations point to real lines, or whether a resume claim is truthful. Those checks require evidence review beyond this structural validator.
 
-## Optional presentation exports
+## Project technology learning guide
 
-An explicitly requested technology learning guide may be drafted under `<output-path>/exports/` after `DISCOVERY` or `FULL` analysis. Present the editable Markdown draft for user review and wait for approval before creating JSON, HTML, or PDF. Approved exports are learning artifacts, not numbered reports; they do not change the required report set or contract header. See [project-learning-pdf.md](project-learning-pdf.md) for the review flow, content boundaries, schema, and rendering instructions.
+After `DISCOVERY` or `FULL` analysis, create an editable learning-guide draft under `<output-path>/exports/` by default, unless the user sets `project_learning_pdf: false`. Show the complete draft and ask whether it meets the user's learning needs. Apply requested edits to the draft and show the revised version. Do not create JSON, HTML, or PDF until the user explicitly approves the current draft. Record the guide status and artifact paths in `SUMMARY.md`; use `REVIEW_REQUIRED` while awaiting edits or approval and `APPROVED` after approval. If opted out, record `NOT_REQUESTED`.
+
+Approved exports are learning artifacts, not numbered reports; they do not change the required report set, contract header, or analysis run status. The guide status is tracked separately in `SUMMARY.md`. See [project-learning-pdf.md](project-learning-pdf.md) for the review flow, content boundaries, schema, and rendering instructions.

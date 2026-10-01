@@ -1,10 +1,10 @@
-# Optional project technology learning guide PDF
+# Project technology learning guide PDF
 
-The learning-guide PDF explains how technologies are used in a project. It is not a resume or a personal-contribution report. It may be generated after `DISCOVERY` or `FULL` analysis when the user explicitly asks for a PDF learning guide.
+The learning-guide PDF explains how technologies are used in a project. It is not a resume or a personal-contribution report. In `DISCOVERY` and `FULL` modes, create its editable Markdown draft by default unless the user explicitly sets `project_learning_pdf: false`. PDF rendering still requires approval of the final edited draft.
 
 ## Review and edit before rendering
 
-1. Finish the Markdown discovery reports, then create `exports/project-learning-guide.md` from [project-learning-guide-template.md](../assets/project-learning-guide-template.md) with status `REVIEW_REQUIRED`. The initial request for a PDF is not approval of its content.
+1. Finish the Markdown discovery reports, then create `exports/project-learning-guide.md` from [project-learning-guide-template.md](../assets/project-learning-guide-template.md) with status `REVIEW_REQUIRED`. Completing project analysis or asking to start this workflow is not approval of the guide content.
 2. Show the complete draft to the user and ask whether it fits their learning needs. They can request edits in chat or edit the Markdown file directly.
 3. Apply requested changes to the same Markdown draft, show the updated content, and wait for explicit approval. Do not create JSON, HTML, or PDF while it is still under review.
 4. After approval, mark the Markdown draft `APPROVED`, convert its final contents into the JSON source, set `approval_status` to `APPROVED`, and render the PDF.

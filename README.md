@@ -144,7 +144,7 @@ Experience level: Intern
 Resume language: Chinese
 ```
 
-To produce a technology learning-guide PDF, request it explicitly in `DISCOVERY` or `FULL` mode. It explains each technology's role in the project, implementation locations, component interactions, and related concepts, with code citations. It does not require personal contribution attribution. Chromium must be available in the environment. See [`references/project-learning-pdf.md`](references/project-learning-pdf.md) for details.
+In `DISCOVERY` and `FULL` mode, the Skill prepares a technology learning-guide draft by default. It explains each technology's role in the project, implementation locations, component interactions, and related concepts, with code citations. It first shows the editable Markdown draft and asks for review; the PDF is rendered only after approval. Set `project_learning_pdf: false` to skip the guide. It does not require personal contribution attribution. Chromium must be available in the environment. See [`references/project-learning-pdf.md`](references/project-learning-pdf.md) for details.
 
 ```text
 Use $backend-repo-career-miner to analyze this repository:
@@ -202,9 +202,9 @@ python3 scripts/validate_output.py "$OUTPUT_DIR" \
 
 The validator checks headers, report-set consistency, and selected structural requirements. Passing it is not proof that claims are factual, that Git identity is correct, that citations are valid, or that resume content is truthful; those require evidence review.
 
-## Optional project technology learning PDF
+## Project technology learning PDF
 
-After an explicit request in `DISCOVERY` or `FULL` mode, the Skill first creates `exports/project-learning-guide.md` and asks whether it meets the user's learning needs. The user can edit that file or request changes. The PDF is rendered from the approved version; no PDF is created before approval. The Markdown template is [`assets/project-learning-guide-template.md`](assets/project-learning-guide-template.md), and the renderer's JSON shape is defined in [`assets/project-learning-guide.schema.json`](assets/project-learning-guide.schema.json). After approval, run the renderer directly with:
+By default in `DISCOVERY` or `FULL` mode, the Skill creates `exports/project-learning-guide.md` and asks whether it meets the user's learning needs. The user can edit that file or request changes. The PDF is rendered from the approved version; no PDF is created before approval. Set `project_learning_pdf: false` to skip the guide. The Markdown template is [`assets/project-learning-guide-template.md`](assets/project-learning-guide-template.md), and the renderer's JSON shape is defined in [`assets/project-learning-guide.schema.json`](assets/project-learning-guide.schema.json). After approval, run the renderer directly with:
 
 ```bash
 python3 scripts/render_project_learning_guide.py \

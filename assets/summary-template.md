@@ -8,6 +8,7 @@
 ## Run manifest
 - Repository root:
 - Analyzed timestamp:
+- Skill source revision:
 - Requested scope:
 - Analysis mode:
 - Candidate identity status:
@@ -16,6 +17,7 @@
 - Experience level:
 - Resume language:
 - Generated reports:
+- Additional artifacts:
 
 Use `NOT_PROVIDED` or `NOT_APPLICABLE` for irrelevant or absent inputs; do not infer them.
 
@@ -32,3 +34,8 @@ Use `NOT_PROVIDED` or `NOT_APPLICABLE` for irrelevant or absent inputs; do not i
 
 ## Knowledge gaps and next evidence
 -
+
+## Project learning guide
+- Status: `NOT_REQUESTED | REVIEW_REQUIRED | APPROVED`
+- Editable draft:
+- PDF:

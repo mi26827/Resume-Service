@@ -33,7 +33,7 @@ description: 以证据优先的方式分析后端仓库，识别技术栈与架�
 - `experience_level`（可选，默认 `Intern / New Grad`；允许值为 `Intern`、`New Grad`、`Junior` 或 `Experienced`）：只影响简历表达和面试深度，不改变证据准入门槛。
 - `resume_language`（可选，默认 `Chinese`）：例如 Chinese 或 English。只影响最终职业材料的语言，不影响技术分析。
 - `user_evidence`（可选）：业务背景、用户所做的工作、指标、设计原因或历史背景。始终标记为 `USER_STATEMENT`；它不会自动成为仓库证据。
-- `project_learning_pdf`（可选，默认 `false`）：在 `DISCOVERY` 或 `FULL` 后生成项目技术栈学习指南 PDF；必须先展示可编辑的 Markdown 草稿并取得用户确认。
+- `project_learning_pdf`（可选，`DISCOVERY` / `FULL` 默认 `true`）：自动准备项目技术栈学习指南草稿并询问用户是否符合学习需要。用户可设为 `false` 跳过；无论如何，都必须先展示草稿、等待修改和明确批准，之后才能生成 PDF。
 
 ## 模式选择与准备
 
@@ -50,17 +50,17 @@ description: 以证据优先的方式分析后端仓库，识别技术栈与架�
 
 各模式职责与默认输出：
 
-- `DISCOVERY`：了解项目用途、识别技术栈、梳理架构并还原代表性业务调用链。生成 `01`、`02`、`03` 和 `SUMMARY.md`；除非用户明确要求，否则不判断个人贡献、不写简历要点、不提出 Agent 方案。若用户请求 `project_learning_pdf`，还需按下文流程生成待审阅的技术学习指南。
+- `DISCOVERY`：了解项目用途、识别技术栈、梳理架构并还原代表性业务调用链。生成 `01`、`02`、`03` 和 `SUMMARY.md`；除非用户明确要求，否则不判断个人贡献、不写简历要点、不提出 Agent 方案。默认按下文流程创建可审阅的技术学习指南草稿；用户可设 `project_learning_pdf: false` 跳过。
 - `CONTRIBUTION`：评估候选人的 Git 归属、两个证据维度、贡献类别和后端工程深度。生成 `04`、`05` 和 `SUMMARY.md`。缺少上下文时可以做轻量内部项目分析，但除非用户明确要求，否则不要生成 `01`–`03`。
 - `AI_AGENT`：扫描并分类 AI 能力，应用 Agent 适用性门槛。生成 `07`、`08` 和 `SUMMARY.md`；只能选择一个既有结论，不能强行归类为 Agent。
 - `RESUME`：生成有证据支持的简历要点和面试准备。生成 `06`、`09` 和 `SUMMARY.md`。可以读取已有贡献证据或在内部重新核验，但不得提升 `WEAK` 或 `UNKNOWN` 证据、降低门槛或伪造缺失的贡献证据；必要时标记为 `PARTIAL` 或 `BLOCKED`。
-- `FULL`：生成 `01` 至 `09` 和 `SUMMARY.md`；仅在用户明确要求时使用。若用户请求 `project_learning_pdf`，还需按下文流程生成待审阅的技术学习指南。
+- `FULL`：生成 `01` 至 `09` 和 `SUMMARY.md`；仅在用户明确要求时使用。默认也创建可审阅的技术学习指南草稿；用户可设 `project_learning_pdf: false` 跳过。
 - `CUSTOM`：只生成用户明确选定的报告。
 
 1. 使用上述默认值确认仓库路径、输出路径和所选分析模式。对于 `CUSTOM`，记录用户明确选择的编号报告文件名；最终校验时必须能取得此列表。
 2. 用户希望进行贡献归属分析时，询问并确认 Git 作者姓名/邮箱。若未提供身份信息，继续分析项目能力，并将所有权标记为 `UNKNOWN`；不得猜测身份。
 3. 确认用户提供的事实和指标可以用于报告，并将其记录为 `USER_STATEMENT`，与仓库证据区分开。
-4. 在 `SUMMARY.md` 中记录仓库根目录、分析修订版本（如可用，使用 `git rev-parse HEAD`）、时间戳、模式、候选人身份状态、候选人时间范围、目标职位、经验级别、简历语言和请求范围。信息未知时使用 `NOT_PROVIDED` 或 `NOT_APPLICABLE`，不要猜测。此运行清单便于比较后续分析结果。
+4. 在 `SUMMARY.md` 中记录仓库根目录、分析修订版本（如可用，使用 `git rev-parse HEAD`）、Skill 来源修订版本（Skill 安装目录是 Git 克隆时使用 `git rev-parse HEAD`，否则标记 `NOT_AVAILABLE`）、时间戳、模式、候选人身份状态、候选人时间范围、目标职位、经验级别、简历语言和请求范围。信息未知时使用 `NOT_PROVIDED` 或 `NOT_APPLICABLE`，不要猜测。记录实际生成的报告和其他产物；对学习指南记录状态及草稿/PDF 路径。此运行清单便于比较后续分析结果并确认实际运行的 Skill 版本。
 5. 检查适用的仓库指令。优先使用本地只读命令；不要联系公共服务，也不要执行可能修改外部系统的应用代码。
 
 按照 [output-contract.md](references/output-contract.md) 中的模式与文件对应关系及稳定报告规则执行。不要创建无关的占位报告。
@@ -121,11 +121,11 @@ description: 以证据优先的方式分析后端仓库，识别技术栈与架�
 
 每条最终要点都要包含所有支持它的主张 ID、每项主张的两个证据维度、引用、主题、面试风险和可能的问题。不要为了增加要点数量而重复同一成果。面试准备必须基于最终主张和准确的代码位置。
 
-## 可选项目技术学习 PDF
+## 项目技术学习指南审阅流程
 
-当用户在 `DISCOVERY` 或 `FULL` 模式请求 `project_learning_pdf` 时，根据 `01-project-overview.md`、`02-tech-stack.md` 和 `03-architecture-analysis.md` 先生成 `exports/project-learning-guide.md`，状态标记为 `REVIEW_REQUIRED`。展示完整草稿并询问是否符合用户的学习需要。用户可以直接编辑该文件，或在对话中提出修改；将修改应用到同一份草稿，再展示更新版。PDF 是后续步骤：在用户明确批准当前内容前，不创建 JSON、HTML 或 PDF。初次提出“生成 PDF”只代表请求启动此流程，不代表批准内容。
+在 `DISCOVERY` 或 `FULL` 模式下，除非用户显式设置 `project_learning_pdf: false`，都根据 `01-project-overview.md`、`02-tech-stack.md` 和 `03-architecture-analysis.md` 生成 `exports/project-learning-guide.md`，状态标记为 `REVIEW_REQUIRED`。展示完整草稿并询问是否符合用户的学习需要。用户可以直接编辑该文件，或在对话中提出修改；将修改应用到同一份草稿，再展示更新版。PDF 是后续步骤：在用户明确批准当前内容前，不创建 JSON、HTML 或 PDF。初始项目分析不是对学习指南内容的批准。
 
-确认后，将 Markdown 草稿标为 `APPROVED`，并转换为 `exports/project-learning-guide.json`。项目事实和代码引用必须来自发现报告；通用原理放在独立的学习说明中。附件和用户补充材料标记为 `USER_STATEMENT`，不得写成代码已验证事实。只有 JSON 中 `approval_status` 为 `APPROVED` 时才运行 [render_project_learning_guide.py](scripts/render_project_learning_guide.py) 生成 PDF。渲染数据格式见 [project-learning-guide.schema.json](assets/project-learning-guide.schema.json)，交互和内容边界见 [project-learning-pdf.md](references/project-learning-pdf.md)。
+确认后，将 Markdown 草稿标为 `APPROVED`，并转换为 `exports/project-learning-guide.json`。项目事实和代码引用必须来自发现报告；通用原理放在独立的学习说明中。附件和用户补充材料标记为 `USER_STATEMENT`，不得写成代码已验证事实。只有 JSON 中 `approval_status` 为 `APPROVED` 时才运行 [render_project_learning_guide.py](scripts/render_project_learning_guide.py) 生成 PDF。渲染数据格式见 [project-learning-guide.schema.json](assets/project-learning-guide.schema.json)，交互和内容边界见 [project-learning-pdf.md](references/project-learning-pdf.md)。在 `SUMMARY.md` 的其他产物和学习指南状态字段中记录草稿及 PDF 路径；尚未批准时 PDF 路径留空。
 
 ## 输出契约
 
