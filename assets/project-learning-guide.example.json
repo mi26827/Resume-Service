@@ -1,0 +1,55 @@
+{
+  "schema_version": "career-miner/project-learning-guide/1.0",
+  "approval_status": "REVIEW_REQUIRED",
+  "language": "zh-CN",
+  "project_name": "[项目名称]",
+  "project_overview": "[依据项目简介报告概括项目目的和主要业务能力]",
+  "overview_evidence": [
+    {
+      "citation": "[path:line]",
+      "supports": "[项目用途或业务能力]",
+      "source_type": "REPOSITORY"
+    }
+  ],
+  "technologies": [
+    {
+      "name": "[技术名称]",
+      "role": "[该技术在项目中的职责]",
+      "project_usage": "[结合真实实现说明项目如何使用它]",
+      "integration": "[它与哪些组件交互；证据未说明时写明未知]",
+      "learning_notes": [
+        "[帮助理解该技术的原理或关键概念，并与项目实例区分]"
+      ],
+      "design_considerations": [],
+      "evidence": [
+        {
+          "citation": "[path:line]",
+          "supports": "[这处代码证明了什么]",
+          "source_type": "REPOSITORY"
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "title": "[端到端业务流程]",
+      "steps": [
+        {
+          "label": "[步骤或组件]",
+          "detail": "[该步骤如何处理数据或调用下游]",
+          "technologies": ["[技术名称]"],
+          "evidence": [
+            {
+              "citation": "[path:line]",
+              "supports": "[这处代码证明了什么]",
+              "source_type": "REPOSITORY"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "study_questions": [
+    "[围绕本项目实现提出的复习问题]"
+  ]
+}

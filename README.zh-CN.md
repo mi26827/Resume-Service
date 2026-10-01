@@ -144,6 +144,16 @@ Experience level: Intern
 Resume language: Chinese
 ```
 
+如需生成辅助学习的项目技术栈 PDF，可在 `DISCOVERY` 或 `FULL` 请求中明确提出。文档会解释各技术在项目中的职责、实现位置、组件协作和相关概念，并附代码引用；它不依赖个人贡献归属。导出需要环境可调用 Chromium，细节见 [`references/project-learning-pdf.md`](references/project-learning-pdf.md)。
+
+```text
+Use $backend-repo-career-miner to analyze this repository:
+<本地仓库绝对路径>
+
+Mode: DISCOVERY
+准备生成中文项目技术栈学习 PDF。逐项解释技术在项目中的职责、实际使用方式、组件协作、关键概念，并附代码位置。先给我可编辑的 Markdown 草稿并等待我审阅；我确认后再生成 PDF。
+```
+
 ```text
 Use $backend-repo-career-miner in FULL mode on <本地仓库路径>.
 ```
@@ -191,6 +201,18 @@ python3 scripts/validate_output.py "$OUTPUT_DIR" \
 ```
 
 校验器检查头部、报告集合一致性和部分结构要求。校验通过不代表陈述一定属实、Git 身份正确、引用有效或简历内容真实；这些仍需基于证据审阅。
+
+## 可选项目技术学习 PDF
+
+Skill 会先生成 `exports/project-learning-guide.md` 草稿并询问你是否符合学习需要；你可以直接编辑该文件或提出修改意见。Skill 根据你确认后的版本生成 PDF。JSON 结构见 [`assets/project-learning-guide.schema.json`](assets/project-learning-guide.schema.json)，Markdown 草稿模板见 [`assets/project-learning-guide-template.md`](assets/project-learning-guide-template.md)。批准前不会生成 PDF。批准后也可单独使用渲染器：
+
+```bash
+python3 scripts/render_project_learning_guide.py \
+  career-miner-output/exports/project-learning-guide.json \
+  --output-dir career-miner-output/exports
+```
+
+完整流程见 [`references/project-learning-pdf.md`](references/project-learning-pdf.md)。
 
 ## 许可证
 
