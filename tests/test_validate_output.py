@@ -1,3 +1,5 @@
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -16,10 +18,11 @@ HEADER = """# Report
 
 
 class ValidateOutputTest(unittest.TestCase):
-    def make_run(self, mode: str) -> Path:
+    def make_run(self, mode: str, report_names=None) -> Path:
         directory = Path(self.temp_dir.name)
         (directory / "SUMMARY.md").write_text(HEADER.format(mode=mode), encoding="utf-8")
-        for name in MODE_REPORTS[mode]:
+        names = MODE_REPORTS[mode] if report_names is None else set(report_names)
+        for name in names:
             body = HEADER.format(mode=mode)
             if name in {"04-contribution-evidence.md", "06-resume-bullets.md"}:
                 body += "Implementation Evidence | Attribution Evidence\n"
@@ -58,6 +61,11 @@ class ValidateOutputTest(unittest.TestCase):
         )
         self.assertTrue(any("unexpected" in error for error in validate(root)))
 
+    def test_standard_mode_rejects_unrecognized_numbered_report(self):
+        root = self.make_run("DISCOVERY")
+        (root / "10-old-report.md").write_text(HEADER.format(mode="DISCOVERY"), encoding="utf-8")
+        self.assertTrue(any("unrecognized numbered reports" in error for error in validate(root)))
+
     def test_contribution_requires_backend_engineering_report(self):
         root = self.make_run("CONTRIBUTION")
         (root / "05-backend-engineering-analysis.md").unlink()
@@ -72,7 +80,84 @@ class ValidateOutputTest(unittest.TestCase):
         root = self.make_run("CONTRIBUTION")
         report = root / "04-contribution-evidence.md"
         report.write_text(report.read_text().replace("abc123", "def456"), encoding="utf-8")
-        self.assertTrue(any("one mode and revision" in error for error in validate(root)))
+        self.assertTrue(
+            any("one contract, mode, revision, and status" in error for error in validate(root))
+        )
+
+    def test_rejects_inconsistent_mode(self):
+        root = self.make_run("DISCOVERY")
+        report = root / "01-project-overview.md"
+        report.write_text(report.read_text().replace("Mode: `DISCOVERY`", "Mode: `FULL`"), encoding="utf-8")
+        self.assertTrue(
+            any("one contract, mode, revision, and status" in error for error in validate(root))
+        )
+
+    def test_rejects_inconsistent_status(self):
+        root = self.make_run("DISCOVERY")
+        report = root / "01-project-overview.md"
+        report.write_text(report.read_text().replace("Status: `COMPLETE`", "Status: `PARTIAL`"), encoding="utf-8")
+        self.assertTrue(
+            any("one contract, mode, revision, and status" in error for error in validate(root))
+        )
+
+    def test_rejects_unsupported_contract_header(self):
+        root = self.make_run("DISCOVERY")
+        summary = root / "SUMMARY.md"
+        summary.write_text(summary.read_text().replace("career-miner/0.2", "career-miner/0.3"), encoding="utf-8")
+        self.assertTrue(any("SUMMARY.md: missing or invalid contract header" in error for error in validate(root)))
+
+    def test_custom_requires_an_explicit_report_list(self):
+        root = self.make_run("CUSTOM", {"01-project-overview.md"})
+        errors = validate(root)
+        self.assertTrue(any("CUSTOM mode requires an explicit report list" in error for error in errors))
+
+    def test_custom_rejects_an_empty_report_list(self):
+        root = self.make_run("CUSTOM", set())
+        errors = validate(root, custom_reports=[])
+        self.assertTrue(any("CUSTOM mode requires an explicit report list" in error for error in errors))
+
+    def test_custom_accepts_exact_selected_report_set(self):
+        selected = {"01-project-overview.md", "03-architecture-analysis.md"}
+        root = self.make_run("CUSTOM", selected)
+        self.assertEqual(validate(root, custom_reports=sorted(selected)), [])
+
+    def test_custom_rejects_missing_and_unrequested_reports(self):
+        selected = {"01-project-overview.md", "03-architecture-analysis.md"}
+        root = self.make_run("CUSTOM", selected)
+        (root / "03-architecture-analysis.md").unlink()
+        (root / "02-tech-stack.md").write_text(HEADER.format(mode="CUSTOM"), encoding="utf-8")
+        errors = validate(root, custom_reports=sorted(selected))
+        self.assertTrue(any("CUSTOM: missing reports" in error for error in errors))
+        self.assertTrue(any("CUSTOM: stale or unexpected reports" in error for error in errors))
+
+    def test_custom_rejects_duplicate_selected_reports(self):
+        root = self.make_run("CUSTOM", {"01-project-overview.md"})
+        errors = validate(root, custom_reports=["01-project-overview.md", "01-project-overview.md"])
+        self.assertTrue(any("custom report list contains duplicates" in error for error in errors))
+
+    def test_custom_cli_accepts_the_explicit_report_list(self):
+        selected = ["01-project-overview.md", "03-architecture-analysis.md"]
+        root = self.make_run("CUSTOM", selected)
+        script = Path(__file__).resolve().parents[1] / "scripts" / "validate_output.py"
+        result = subprocess.run(
+            [sys.executable, str(script), str(root), "--custom-reports", *selected],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_custom_cli_explains_when_report_list_is_missing(self):
+        root = self.make_run("CUSTOM", {"01-project-overview.md"})
+        script = Path(__file__).resolve().parents[1] / "scripts" / "validate_output.py"
+        result = subprocess.run(
+            [sys.executable, str(script), str(root)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("CUSTOM mode requires an explicit report list", result.stderr)
 
     def test_resume_requires_evidence_funnel_sections(self):
         root = self.make_run("RESUME")

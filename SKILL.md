@@ -56,7 +56,7 @@ Mode responsibilities and default outputs:
 - `FULL`: emit `01` through `09` and `SUMMARY.md`; use only when explicitly requested.
 - `CUSTOM`: emit only the reports explicitly selected by the user.
 
-1. Confirm the repository path, output path, and selected analysis mode using the defaults above.
+1. Confirm the repository path, output path, and selected analysis mode using the defaults above. For `CUSTOM`, record the exact numbered report filenames explicitly selected by the user; the list must be available for final validation.
 2. Ask for candidate Git author name/email when attribution is desired. If unavailable, continue with capability analysis and mark ownership `UNKNOWN`; never guess identity.
 3. Confirm any user-supplied facts and metrics are permitted for the report. Record them as `USER_STATEMENT`, distinct from repository evidence.
 4. Record repository root, analyzed revision (`git rev-parse HEAD` when available), timestamp, mode, candidate identity status, candidate time window, target role, experience level, resume language, and requested scope in `SUMMARY.md`. Use `NOT_PROVIDED` or `NOT_APPLICABLE` rather than guessing. This run manifest makes later runs comparable.
@@ -144,4 +144,6 @@ Use the matching assets: [summary-template.md](assets/summary-template.md), [pro
 
 ## Final quality gate
 
-Before delivery, run `python3 scripts/validate_output.py <output-dir>` when reports were generated. Verify: the requested mode controls emitted files; detected stack drives analysis; representative call chains are evidenced when architecture is in scope; both evidence dimensions are present; capability/ownership/exploration are never conflated; every personal bullet passes both thresholds; metrics have sources; secrets are absent; AI labels match runtime behavior; the Agent decision has exactly one justified outcome; proposals are bounded and not presented as production; stack-specific assumptions have not leaked into generic conclusions. Revise failures before reporting.
+Before delivery, run `python3 scripts/validate_output.py <output-dir>` for standard modes. For `CUSTOM`, pass the exact selected report filenames, for example `python3 scripts/validate_output.py <output-dir> --custom-reports 01-project-overview.md 03-architecture-analysis.md`. The validator checks output structure and selected machine-checkable markers; it does not prove factual accuracy, candidate authorship, citation validity, or resume truthfulness.
+
+Also review the evidence: the requested mode controls emitted files; detected stack drives analysis; representative call chains are evidenced when architecture is in scope; both evidence dimensions are present; capability/ownership/exploration are never conflated; every personal bullet passes both thresholds; metrics have sources; secrets are absent; AI labels match runtime behavior; the Agent decision has exactly one justified outcome; proposals are bounded and not presented as production; stack-specific assumptions have not leaked into generic conclusions. Revise failures before reporting.

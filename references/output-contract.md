@@ -36,7 +36,7 @@ Start every report with these machine-checkable lines after its title:
 > Status: `COMPLETE` <!-- or PARTIAL / BLOCKED -->
 ```
 
-Use the same mode and revision in all files from one run. `PARTIAL` names missing evidence or scope; `BLOCKED` names the blocker. An empty section is not evidence.
+Use the same contract, mode, revision, and status in all files from one run. `PARTIAL` names missing evidence or scope; `BLOCKED` names the blocker. An empty section is not evidence.
 
 ## Consistency rules
 
@@ -51,3 +51,20 @@ Use the same mode and revision in all files from one run. `PARTIAL` names missin
 ## Repeat runs
 
 Treat the analyzed revision as an immutable snapshot. For a later run, compare claim IDs and report `ADDED`, `CHANGED`, `UNCHANGED`, or `REMOVED` only when both revisions are available. Re-evaluate levels from the new snapshot; do not carry authorship, metrics, or runtime status forward without evidence.
+
+## Structural validation
+
+Run the validator from the Skill repository after generating reports:
+
+```bash
+python3 scripts/validate_output.py <output-dir>
+```
+
+For a `CUSTOM` run, pass the exact numbered report filenames explicitly selected by the user. `SUMMARY.md` is always required and is not included in this list:
+
+```bash
+python3 scripts/validate_output.py <output-dir> \
+  --custom-reports 01-project-overview.md 03-architecture-analysis.md
+```
+
+The validator checks supported contract headers, shared contract/mode/revision/status, required report filenames, stale numbered reports, and a few required structural sections and markers. It does not establish whether repository claims are factually correct, whether a cited author is the user, whether citations point to real lines, or whether a resume claim is truthful. Those checks require evidence review beyond this structural validator.
